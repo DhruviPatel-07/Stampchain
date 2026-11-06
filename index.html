@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#060910">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>StampChain - Road Logistics Tracking & Accountability Platform</title>
+  
+  <!-- Clean Enterprise Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Design System Stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- 0. MOCK AUTHENTICATION LOGIN OVERLAY -->
+  <div class="login-screen-overlay" id="loginOverlay">
+    <div class="login-card">
+      <div class="login-brand">
+        <div class="logo-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="5" y="10" width="14" height="11" rx="2" stroke="#38bdf8" stroke-width="2" fill="#0f172a" />
+            <path d="M8 10V7a4 4 0 1 1 8 0v3" stroke="#10b981" stroke-width="2" stroke-linecap="round" />
+            <circle cx="12" cy="15.5" r="1.5" fill="#38bdf8" />
+          </svg>
+        </div>
+        <div class="login-title">
+          STAMPCHAIN <span>CONTROL ACCESS</span>
+        </div>
+      </div>
+      
+      <p class="login-subtext">Enterprise Road Logistics Accountability & Cryptographic Chain of Custody System.</p>
+
+      <div class="login-form-group">
+        <label class="login-label">Email or Dispatcher ID</label>
+        <input type="text" class="login-input" value="admin@stampchain.io" placeholder="name@organization.com">
+      </div>
+
+      <div class="login-form-group">
+        <label class="login-label">Security Key / Password</label>
+        <input type="password" class="login-input" value="••••••••••••" placeholder="••••••••">
+      </div>
+
+      <button class="login-btn" onclick="loginRole('admin')">Authenticate & Enter Platform ➔</button>
+
+      <div class="quick-roles-title">Demo Role Portals</div>
+
+      <div class="quick-role-buttons-grid">
+        <button class="role-select-btn" onclick="loginRole('admin')">
+          <span>👑</span> Admin / Dispatcher
+        </button>
+        <button class="role-select-btn" onclick="loginRole('driver')">
+          <span>🚚</span> Driver (Rajesh K.)
+        </button>
+        <button class="role-select-btn" onclick="loginRole('warehouse')">
+          <span>🏭</span> Warehouse Staff
+        </button>
+        <button class="role-select-btn" onclick="loginRole('receiver')">
+          <span>📦</span> Receiver (Consignee)
+        </button>
+      </div>
+
+      <div style="text-align: center; font-size: 10.5px; color: var(--text-muted);">
+        <a href="#" onclick="alert('Password reset link sent to registered administrator email.')" style="color: var(--text-secondary); text-decoration: underline;">Forgot Password?</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 1. TOP ENTERPRISE HEADER -->
+  <header class="header">
+    <div class="brand-section">
+      <div class="logo-badge" onclick="navigateTo('dashboard')">
+        <div class="logo-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="5" y="10" width="14" height="11" rx="2" stroke="#38bdf8" stroke-width="2" fill="#0f172a" />
+            <path d="M8 10V7a4 4 0 1 1 8 0v3" stroke="#10b981" stroke-width="2" stroke-linecap="round" />
+            <circle cx="12" cy="15.5" r="1.5" fill="#38bdf8" />
+          </svg>
+        </div>
+        <div class="logo-title">
+          STAMPCHAIN <span>PLATFORM</span>
+        </div>
+      </div>
+      <span class="status-pill status-on-route" style="font-size: 8.5px;">MAINNET LEDGER</span>
+    </div>
+
+    <!-- Active User & Role Chip -->
+    <div style="display: flex; align-items: center; gap: 10px;">
+      <div class="role-profile-badge" onclick="promptRoleSwitch()" title="Click to switch role">
+        <span style="color: var(--color-live);">●</span>
+        <span id="headerRoleLabel">Admin / Dispatcher</span>
+        <span style="font-size: 9px; color: var(--text-muted);">⇄ Switch</span>
+      </div>
+
+      <button class="header-btn share-btn" onclick="copySharePreviewLink()" title="Copy shareable link">
+        <span>🔗 Share</span>
+      </button>
+
+      <button class="header-btn" onclick="logout()" title="Logout">
+        <span>⎋ Logout</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- 2. MAIN APPLICATION WORKSPACE WITH SIDEBAR -->
+  <div class="app-container">
+    
+    <!-- DESKTOP SIDEBAR NAVIGATION -->
+    <aside class="app-sidebar">
+      <nav class="nav-links-list">
+        <button class="nav-item-btn active" data-page="dashboard">
+          <span class="nav-item-icon">📊</span>
+          <span>Dashboard</span>
+        </button>
+        <button class="nav-item-btn" data-page="shipments">
+          <span class="nav-item-icon">📦</span>
+          <span>Shipments</span>
+        </button>
+        <button class="nav-item-btn" data-page="live_tracking">
+          <span class="nav-item-icon">🗺️</span>
+          <span>Live Tracking</span>
+        </button>
+        <button class="nav-item-btn" data-page="checkpoints">
+          <span class="nav-item-icon">📍</span>
+          <span>Checkpoints</span>
+        </button>
+        <button class="nav-item-btn" data-page="alerts">
+          <span class="nav-item-icon">🚨</span>
+          <span>Alerts & Exceptions</span>
+        </button>
+        <button class="nav-item-btn" data-page="analytics">
+          <span class="nav-item-icon">📈</span>
+          <span>Analytics</span>
+        </button>
+        <button class="nav-item-btn" data-page="audit">
+          <span class="nav-item-icon">📜</span>
+          <span>Activity / Audit Trail</span>
+        </button>
+        <button class="nav-item-btn" data-page="settings">
+          <span class="nav-item-icon">⚙️</span>
+          <span>Settings</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <button class="nav-item-btn" data-page="role_cockpit" style="border: 1px dashed var(--border-medium); color: var(--color-live);">
+          <span class="nav-item-icon">👔</span>
+          <span>My Role Cockpit</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- 3. PAGE CONTAINERS -->
+
+    <!-- PAGE 1: DASHBOARD (PRESERVED PIXEL-ART CENTERPIECE) -->
+    <main class="page-container page-active" id="page-dashboard">
+      
+      <!-- KPI Strip -->
+      <section class="kpi-strip">
+        <div class="kpi-card active" onclick="handleMapNodeClick('truck')">
+          <div class="kpi-header"><span class="kpi-label">Active Shipments</span><span class="kpi-trend trend-up">NETWORK</span></div>
+          <div class="kpi-body"><span class="kpi-value" id="kpiActiveVal">142</span><span class="kpi-subtext">4 Corridors</span></div>
+        </div>
+        <div class="kpi-card transit" onclick="handleMapNodeClick('truck')">
+          <div class="kpi-header"><span class="kpi-label">In Transit</span><span class="kpi-trend trend-up">ON ROUTE</span></div>
+          <div class="kpi-body"><span class="kpi-value" id="kpiTransitVal">89</span><span class="kpi-subtext">62.6% Active</span></div>
+        </div>
+        <div class="kpi-card delayed" onclick="handleMapNodeClick('wp_surat_hazard')">
+          <div class="kpi-header"><span class="kpi-label">Delayed</span><span class="kpi-trend trend-warning">⚠ 4.2%</span></div>
+          <div class="kpi-body"><span class="kpi-value" id="kpiDelayVal">6</span><span class="kpi-subtext">Surat Choke</span></div>
+        </div>
+        <div class="kpi-card critical" onclick="navigateTo('alerts')">
+          <div class="kpi-header"><span class="kpi-label">Critical Alerts</span><span class="kpi-trend trend-critical">EXCEPTIONS</span></div>
+          <div class="kpi-body"><span class="kpi-value" id="kpiCriticalVal">2</span><span class="kpi-subtext">Action Req.</span></div>
+        </div>
+        <div class="fleet-selector-wrapper">
+          <select id="fleetSelect" class="fleet-select">
+            <option value="SC-1048" selected>SC-1048 (GJ01XX1234) - Surat Delay</option>
+            <option value="SC-1052">SC-1052 (MH04AB5678) - On Schedule</option>
+            <option value="SC-1060">SC-1060 (GJ06TR9011) - Route Deviation</option>
+            <option value="SC-1077">SC-1077 (MH12PQ3344) - Cold Express</option>
+          </select>
+        </div>
+      </section>
+
+      <!-- Centerpiece Interactive Pixel Map Viewport -->
+      <section class="main-workspace">
+        <aside class="sidebar-left">
+          <div class="sidebar-header"><div class="sidebar-title"><span>Exceptions</span><span class="badge-count">Live</span></div></div>
+          <div class="alerts-stream" id="alertsStream"></div>
+        </aside>
+
+        <section class="map-viewport" id="mapViewport">
+          <canvas id="logisticsMapCanvas"></canvas>
+          <svg id="mapInteractiveSvg"></svg>
+          <div class="map-controls-floating">
+            <div class="map-layer-panel">
+              <div class="legend-item"><div class="legend-line verified"></div><span>Verified</span></div>
+              <div class="legend-item"><div class="legend-line live"></div><span>Live GPS</span></div>
+              <div class="legend-item"><div class="legend-line estimated"></div><span>Estimated</span></div>
+              <div class="legend-item"><div class="legend-line delay"></div><span>Delay</span></div>
+              <div class="legend-item"><div class="legend-line deviation"></div><span>Deviation</span></div>
+            </div>
+          </div>
+          <div class="map-hud-telemetry">
+            <div class="hud-live-tag">LIVE GPS</div>
+            <div class="hud-metric"><span class="hud-metric-label">Vehicle</span><span class="hud-metric-value" style="color: var(--color-live);">GJ01XX1234</span></div>
+            <div class="hud-metric"><span class="hud-metric-label">Speed</span><span class="hud-metric-value" id="hudLiveSpeed">46 KM/H</span></div>
+            <div class="hud-metric"><span class="hud-metric-label">KM</span><span class="hud-metric-value" id="hudDistanceKm">285 / 525 KM</span></div>
+          </div>
+          <div class="map-tooltip" id="mapTooltip"></div>
+        </section>
+
+        <aside class="inspector-panel" id="inspectorPanel">
+          <div class="inspector-tabs-nav">
+            <button class="inspector-tab-btn active" data-tab="timeline">Timeline</button>
+            <button class="inspector-tab-btn" data-tab="quantity">Quantity</button>
+            <button class="inspector-tab-btn" data-tab="overview">Overview</button>
+          </div>
+          <div style="padding: 10px 14px; border-bottom: 1px solid var(--border-subtle); display: flex; justify-content: space-between;">
+            <strong id="inspectorTitle" style="font-size: 13px;">SC-1048</strong>
+            <span class="status-pill status-on-route">LIVE GPS</span>
+          </div>
+          <div class="inspector-body" id="inspectorBody"></div>
+        </aside>
+      </section>
+
+      <!-- Bottom Timeline Scrubber -->
+      <footer class="timeline-bar">
+        <div class="timeline-controls">
+          <button class="play-pause-btn" id="playPauseBtn">❚❚</button>
+          <button class="speed-badge" id="speedBtn">1x</button>
+        </div>
+        <div class="timeline-track-container">
+          <div class="track-meta-row">
+            <span>Corridor: Ahmedabad ➔ Vadodara ➔ Surat ➔ Mumbai</span>
+            <span style="color: var(--color-live); font-weight: 700;">LIVE GPS TELEMETRY</span>
+          </div>
+          <div class="timeline-slider-wrapper">
+            <input type="range" min="0" max="100" value="52" class="timeline-range" id="timelineSlider">
+          </div>
+        </div>
+      </footer>
+    </main>
+
+    <!-- PAGE 2: SHIPMENTS DIRECTORY -->
+    <section class="page-container" id="page-shipments">
+      <div class="page-header-strip">
+        <div class="page-title"><span>📦 Shipments Directory</span></div>
+        <div class="search-input-wrap">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="shipmentsSearchInput" class="search-input" placeholder="Search by ID, Vehicle, Driver...">
+        </div>
+      </div>
+
+      <div class="page-content-padding">
+        <div class="enterprise-table-card">
+          <table class="enterprise-table">
+            <thead>
+              <tr>
+                <th>Shipment ID</th>
+                <th>Route Corridor</th>
+                <th>Vehicle</th>
+                <th>Driver</th>
+                <th>Current Location</th>
+                <th>Status</th>
+                <th>ETA</th>
+                <th>Quantity</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="shipmentsTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- PAGE: SHIPMENT DETAILS VIEW -->
+    <section class="page-container" id="page-shipment-details">
+      <div class="page-header-strip">
+        <div class="page-title">
+          <button class="header-btn" onclick="navigateTo('shipments')">← Back to Shipments</button>
+          <span id="shipmentDetailsHeaderTitle">Shipment Details</span>
+        </div>
+      </div>
+      <div class="page-content-padding" id="shipmentDetailsContent"></div>
+    </section>
+
+    <!-- PAGE 3: LIVE TRACKING -->
+    <section class="page-container" id="page-live-tracking">
+      <div class="page-header-strip">
+        <div class="page-title"><span>🗺️ Live Fleet Tracking (Multi-Truck)</span></div>
+        <button class="header-btn primary" onclick="navigateTo('dashboard')">View Central Map ➔</button>
+      </div>
+      <div class="page-content-padding">
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px;" id="liveTrackingFleetList"></div>
+      </div>
+    </section>
+
+    <!-- PAGE 4: CHECKPOINTS -->
+    <section class="page-container" id="page-checkpoints">
+      <div class="page-header-strip">
+        <div class="page-title"><span>📍 Checkpoints Management</span></div>
+        <div class="filter-pill-group">
+          <button class="filter-pill-btn cp-filter-btn active" data-filter="all" onclick="filterCheckpoints('all')">All</button>
+          <button class="filter-pill-btn cp-filter-btn" data-filter="passed" onclick="filterCheckpoints('passed')">Passed</button>
+          <button class="filter-pill-btn cp-filter-btn" data-filter="upcoming" onclick="filterCheckpoints('upcoming')">Upcoming</button>
+          <button class="filter-pill-btn cp-filter-btn" data-filter="delayed" onclick="filterCheckpoints('delayed')">Delayed</button>
+          <button class="filter-pill-btn cp-filter-btn" data-filter="not_verified" onclick="filterCheckpoints('not_verified')">Not Verified</button>
+        </div>
+      </div>
+      <div class="page-content-padding">
+        <div class="enterprise-table-card">
+          <table class="enterprise-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Checkpoint</th>
+                <th>Location</th>
+                <th>Shipment</th>
+                <th>Vehicle</th>
+                <th>Expected</th>
+                <th>Actual</th>
+                <th>Status</th>
+                <th>Verification Method</th>
+                <th>Verified By</th>
+              </tr>
+            </thead>
+            <tbody id="checkpointsTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- PAGE 5: ALERTS & EXCEPTIONS -->
+    <section class="page-container" id="page-alerts">
+      <div class="page-header-strip">
+        <div class="page-title"><span>🚨 Corridor Exceptions Center</span></div>
+      </div>
+      <div class="page-content-padding">
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px;" id="alertsPageGrid"></div>
+      </div>
+    </section>
+
+    <!-- PAGE 6: ANALYTICS -->
+    <section class="page-container" id="page-analytics">
+      <div class="page-header-strip">
+        <div class="page-title"><span>📈 Logistics Analytics & Performance</span></div>
+      </div>
+      <div class="page-content-padding" id="analyticsChartsWrapper"></div>
+    </section>
+
+    <!-- PAGE 7: ACTIVITY / AUDIT TRAIL -->
+    <section class="page-container" id="page-audit">
+      <div class="page-header-strip">
+        <div class="page-title"><span>📜 Cryptographic Audit Trail (Chronological)</span></div>
+      </div>
+      <div class="page-content-padding">
+        <div class="enterprise-table-card">
+          <table class="enterprise-table">
+            <thead>
+              <tr>
+                <th>Timestamp</th>
+                <th>Shipment</th>
+                <th>Event</th>
+                <th>Location</th>
+                <th>Actor / Signer</th>
+                <th>Status</th>
+                <th>Verification Method</th>
+                <th>Details</th>
+              </tr>
+            </thead>
+            <tbody id="auditTrailTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- PAGE 8: SETTINGS -->
+    <section class="page-container" id="page-settings">
+      <div class="page-header-strip">
+        <div class="page-title"><span>⚙️ Platform Settings</span></div>
+      </div>
+      <div class="page-content-padding" id="settingsPageContent"></div>
+    </section>
+
+    <!-- ROLE COCKPIT VIEW -->
+    <section class="page-container" id="page-role-cockpit">
+      <div class="page-header-strip">
+        <div class="page-title"><span>👔 Role-Specific Operational Cockpit</span></div>
+      </div>
+      <div class="page-content-padding" id="roleCockpitWrapper"></div>
+    </section>
+
+  </div>
+
+  <!-- MOBILE BOTTOM NAVIGATION -->
+  <nav class="mobile-bottom-nav">
+    <button class="mobile-nav-item active" data-page="dashboard"><span>📊</span><span>Map</span></button>
+    <button class="mobile-nav-item" data-page="shipments"><span>📦</span><span>Fleet</span></button>
+    <button class="mobile-nav-item" data-page="checkpoints"><span>📍</span><span>Checkpoints</span></button>
+    <button class="mobile-nav-item" data-page="alerts"><span>🚨</span><span>Alerts</span></button>
+    <button class="mobile-nav-item" data-page="role_cockpit"><span>👔</span><span>Cockpit</span></button>
+  </nav>
+
+  <!-- TOAST NOTIFICATION -->
+  <div id="shareToast" class="share-toast">🔗 Link copied to clipboard!</div>
+
+  <!-- CORE SCRIPTS -->
+  <script src="pixel-sprites.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
